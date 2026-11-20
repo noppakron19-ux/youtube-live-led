@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>YouTube Live – LED Display</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+    #player {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #000;
+    }
+    #message {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: #fff;
+      background: #111;
+      font: 20px/1.5 system-ui, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="message">กรุณาใส่ YouTube Video ID ต่อท้าย URL ด้วย ?v=VIDEO_ID</div>
+  <iframe
+    id="player"
+    title="YouTube Live"
+    allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+    allowfullscreen
+    referrerpolicy="strict-origin-when-cross-origin"
+    style="display:none">
+  </iframe>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const videoId = params.get("v");
+    const validId = /^[A-Za-z0-9_-]{6,20}$/.test(videoId || "");
+    if (validId) {
+      const player = document.getElementById("player");
+      player.src =
+        "https://www.youtube.com/embed/" + encodeURIComponent(videoId) +
+        "?autoplay=1&mute=1&controls=0&rel=0&playsinline=1";
+      player.style.display = "block";
+      document.getElementById("message").style.display = "none";
+    }
+  </script>
+</body>
+</html>
